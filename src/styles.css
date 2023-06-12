@@ -1,0 +1,55 @@
+body {
+  padding: 0;
+  margin: 0;
+  font: 14px/1.5 "Fira Sans", sans-serif;
+  color: #ececec;
+  background: #142d4c;
+}
+
+.container {
+  max-width: 680px;
+}
+
+h1,
+h4 {
+  font: 20px/1.5 "Mr Dafoe", cursive;
+  margin: 0;
+  color: #9fd3c7;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+i {
+  color: #385170;
+}
+
+h2 sup {
+  font-size: 16px;
+}
+
+.temperature {
+  color: #9fd3c7;
+  text-decoration: none;
+}
+
+.temperature.active {
+  color: #142d4c;
+}
+
+#temperature-type {
+  display: none;
+}
+
+input {
+  border-color: #142d4c;
+  font: 14px/1.5 "Fira Sans", sans-serif;
+}
+
+.btn {
+  background: #9fd3c7;
+  color: #385170;
+  border-color: #142d4c;
+  font-family: "Mr Dafoe", cursive;
+}
