@@ -83,6 +83,9 @@ function getResponse(res) {
     `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
   );
 
+  const time = data.dt * 1000 - data.timezone * 1000 * 2;
+  currentTime(time);
+
   temperatureType.style.display = "inline";
   humidity.innerHTML = `Humidity: ${data.main.humidity}%`;
   wind.innerHTML = `Wind: ${data.wind.speed}km/h`;
@@ -115,10 +118,19 @@ function currentLocationTemperature() {
   }
 }
 
-const date = new Date();
-dayText.innerHTML = `${days[date.getDay()]} ${addZero(
-  date.getHours()
-)}:${addZero(date.getMinutes())}`;
+function currentTime(time) {
+  console.log("time", time);
+  let date;
+  if (!time) {
+    date = new Date();
+  } else {
+    date = new Date(time);
+  }
+
+  dayText.innerHTML = `Last update: ${days[date.getDay()]} ${addZero(
+    date.getHours()
+  )}:${addZero(date.getMinutes())}`;
+}
 
 changeTemperature.forEach((b) => {
   b.addEventListener("click", function (e) {
