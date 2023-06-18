@@ -62,6 +62,7 @@ const humidity = document.querySelector("#humidity");
 const wind = document.querySelector("#wind");
 const weatherDescription = document.querySelector("#weather-description");
 const buttonCurrent = document.querySelector("#button-current");
+const iconElement = document.querySelector("#icon");
 let currentTemp;
 
 function addZero(i) {
@@ -77,6 +78,10 @@ function getResponse(res) {
   temperatureText.innerHTML = currentTemp;
   cityText.innerHTML = data.name.charAt(0).toUpperCase() + data.name.slice(1);
   description.innerHTML = data.weather[0].description;
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+  );
 
   temperatureType.style.display = "inline";
   humidity.innerHTML = `Humidity: ${data.main.humidity}%`;
