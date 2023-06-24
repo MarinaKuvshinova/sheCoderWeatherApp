@@ -73,7 +73,7 @@ function addZero(i) {
 }
 
 function formatDay(timestamp) {
-  let date = new Date(timestamp * 10000);
+  let date = new Date(timestamp * 1000);
 
   return days[date.getDay()];
 }
