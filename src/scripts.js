@@ -72,6 +72,46 @@ function addZero(i) {
   return i;
 }
 
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 10000);
+
+  return days[date.getDay()];
+}
+
+function displayForecast(response) {
+  const data = response.data.daily;
+  const forecast = document.querySelector("#forecast");
+  let forecastHtml = "";
+
+  data.forEach((day, index) => {
+    if (index > 6) return true;
+    forecastHtml += `<div class="col-12">
+              <div class="card p-2">
+                <h4>${formatDay(day.dt)}</h4>
+                <div class="row">
+                  <div class="col-2">
+                  <img src="http://openweathermap.org/img/wn/${
+                    day.weather[0].icon
+                  }@2x.png">
+                  </div>
+                  <div class="col-10"><span class="forecast-temp">${Math.round(
+                    day.temp.max
+                  )}</span><span class="forecast-metr">°C</span>/<span class="forecast-temp">${Math.round(
+      day.temp.min
+    )}</span><span class="forecast-metr">°C</span></div>
+                </div>
+              </div>
+            </div>`;
+  });
+
+  forecast.innerHTML = forecastHtml;
+}
+
+function getForecast(coord) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coord.lat}&lon=${coord.lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+
 function getResponse(res) {
   const data = res.data;
   currentTemp = Math.round(data.main.temp);
@@ -90,6 +130,8 @@ function getResponse(res) {
   humidity.innerHTML = `Humidity: ${data.main.humidity}%`;
   wind.innerHTML = `Wind: ${data.wind.speed}km/h`;
   weatherDescription.style.display = "flex";
+
+  getForecast(data.coord);
 }
 
 function getTemperature(city) {
@@ -119,7 +161,6 @@ function currentLocationTemperature() {
 }
 
 function currentTime(time) {
-  console.log("time", time);
   let date;
   if (!time) {
     date = new Date();
@@ -132,6 +173,7 @@ function currentTime(time) {
   )}:${addZero(date.getMinutes())}`;
 }
 
+let isCelsius = true;
 changeTemperature.forEach((b) => {
   b.addEventListener("click", function (e) {
     e.preventDefault();
@@ -147,6 +189,25 @@ changeTemperature.forEach((b) => {
       temperatureText.innerHTML = (currentTemp * 9) / 5 + 32;
     }
     this.classList.add("active");
+    isCelsius = !isCelsius;
+
+    const forecastTemp = document.querySelectorAll(".forecast-temp");
+    const forecastMetr = document.querySelectorAll(".forecast-metr");
+    forecastTemp.forEach((item) => {
+      const val = item.innerHTML;
+      if (!isCelsius) {
+        item.innerHTML = Math.round((val * 9) / 5 + 32);
+      } else {
+        item.innerHTML = Math.round((val - 32) * (5 / 9));
+      }
+    });
+    forecastMetr.forEach((item) => {
+      if (isCelsius) {
+        item.innerHTML = "°C";
+      } else {
+        item.innerHTML = "°F";
+      }
+    });
   });
 });
 
